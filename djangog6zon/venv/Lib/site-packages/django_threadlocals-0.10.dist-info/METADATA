@@ -1,0 +1,51 @@
+Metadata-Version: 2.1
+Name: django-threadlocals
+Version: 0.10
+Summary: Contains utils for storing and retreiving values from threadlocals, and middleware for placing the current Django request in threadlocal storage.
+Home-page: https://github.com/nebstrebor/django-threadlocals
+Author: Ben Roberts
+Author-email: ben@nutrislice.com
+License: UNKNOWN
+Platform: UNKNOWN
+Classifier: Programming Language :: Python :: 2
+Classifier: License :: OSI Approved :: BSD License
+Classifier: Operating System :: OS Independent
+Classifier: Framework :: Django
+Description-Content-Type: text/markdown
+
+Setup/Usage
+===========
+Install using `pip install django-threadlocals`
+
+Add `threadlocals.middleware.ThreadLocalMiddleware` to your `MIDDLEWARE_CLASSES` setting.
+Then use it as follows:
+
+Example usage:
+--------------
+```python
+from threadlocals.threadlocals import get_current_request
+
+request = get_current_request()
+```
+
+
+Caveat Emptor
+==================
+
+Storing the request in threadlocals goes against several django core developers' strong inclinations against using threadlocals.
+See [this thread on django-users](https://groups.google.com/forum/?fromgroups=#!topic/django-users/5681nX0YPgQ) for a more in-depth discussion.
+We recommend you not do this unless you have a really good reason to do so. We feel like we had a really good
+reason (the only one we've come across so far):
+Having the request in threadlocals is the core piece that allowed us to build a true multi-tenant system on top of django where the site is resolved dynamically based on the current host,
+and  objects are filtered based on the current host. With the current version of django, this is nearly impossible to do without the request in threadlocals.  This was a very significant and advanced undertaking, but we're happy with the results.
+
+
+Tests
+-----
+
+To run tests:
+
+`python tester/manage.py test`
+
+
+
